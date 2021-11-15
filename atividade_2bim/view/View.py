@@ -12,6 +12,7 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
         self.btnConsultar()
         self.btnAlterar()
         self.btnListar()
+        self.btnDeletar()
 
 
     def mainWindow(self):
@@ -38,6 +39,13 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
         consultar_frm.pack()
         consultar_btn = ttk.Button(consultar_frm, text='Consultar Cliente', command=self.controller.clickConsultar)
         consultar_btn.pack(padx=1, pady=1)
+        
+        
+    def btnDeletar(self):
+        deletar_frm = ttk.Frame(self.main_window)
+        deletar_frm.pack()
+        deletar_btn = ttk.Button(deletar_frm, text='Apagar Cliente', command=self.controller.clickDeletar)
+        deletar_btn.pack(padx=1, pady=1)
     
     
     def btnListar(self):
@@ -129,13 +137,36 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
         submit = ttk.Button(consulta_window, text="Enviar", command=consulta_window.destroy)
         submit.pack()
         self.wait_window(consulta_window)
+        ########################################
+        listar_window = tk.Toplevel(self)
+        resultado = tk.StringVar(listar_window)
+        resultado.set(self.controller.enviarConsulta(cpf.get()))
+        cliente = tk.Listbox(listar_window, selectmode='single', height=2, width=300)
+        cliente.pack()
+        cliente.insert('end', resultado.get())
+        self.wait_window(listar_window)
+        
+        
+        
+    def deletarForm(self): #SÓ FUNCIONA NO TERMINAL, NÃO CONSEGUI BOTAR NO TKINTER AINDA
+        deletar_window = tk.Toplevel(self)
+        cpf = tk.StringVar(deletar_window)
+        cpf_lbl = ttk.Label(deletar_window, text='CPF')
+        cpf_lbl.pack()
+        cpf_ent = ttk.Entry(deletar_window, textvariable=cpf)
+        cpf_ent.pack(padx=1, pady=3)
+        
+        submit = ttk.Button(deletar_window, text="Enviar", command=deletar_window.destroy)
+        submit.pack()
+        self.wait_window(deletar_window)
        
-        self.controller.enviarConsulta(cpf.get())
+        self.controller.deletarCliente(cpf.get())
+        self.sucessMessage()
               
     
     def listarTodos(self):
         listar_window = tk.Toplevel(self)
-        clientes = tk.Listbox(listar_window, selectmode='single', height=100, width=150)
+        clientes = tk.text(listar_window, selectmode='single', height=100, width=150)
         clientes.pack()
         clientes.insert('end', *self.controller.enviarLista())
         self.wait_window(listar_window)

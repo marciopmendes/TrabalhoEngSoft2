@@ -20,6 +20,9 @@ class Controller:
 
     def clickAlterar(self):
         self.view.alterarForm()
+        
+    def clickDeletar(self):
+        self.view.deletarForm()
     
     def clickCadastrar(self):
         self.view.clienteForm()
@@ -37,7 +40,11 @@ class Controller:
         self.model.executarAlteracao(cpf, nome, endereco, telefone)
         
     def enviarConsulta(self, cpf):
-        self.model.executarConsulta(cpf)
+        consultado = self.model.executarConsulta(cpf)
+        return consultado
+        
+    def deletarCliente(self, cpf):
+        self.model.deletarCliente(cpf)
         
     def enviarLista(self):
         lista = self.model.executarLista()
@@ -49,6 +56,5 @@ app.main()
 
 
 """PRÓXIMOS PASSOS:
--EXIBIR OS DADOS DA CONSULTA EM UMA JANELA SEPARADA (USANDO TEXT WIDGET)
--CRIAR FUNCIONALIDADE DE DELETAR CLIENTE
+-JANELA DE SUCESSO OU ERRO NAS OPERAÇÕES (EX. CONSULTAR, DELETAR...)
 -VER SE DA PRA INSERIR PLACEHOLDERS"""

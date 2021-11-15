@@ -15,7 +15,12 @@ class Model:
         self.banco.inserirCliente(nome, endereco, telefone, cpf)
         
     def executarConsulta(self, cpf):
-        self.banco.consultarCliente(cpf)
+        consultado = self.banco.consultarCliente(cpf)
+        consultado_format = f"""NOME: {consultado[0]}   ENDEREÇO: {consultado[1]}   TELEFONE: {consultado[2]}   CPF: {consultado[3]}"""
+        return consultado_format
+        
+    def deletarCliente(self, cpf):
+        self.banco.deletarCliente(cpf)
         
     def executarLista(self):
         lista = self.banco.listarClientes()
@@ -23,18 +28,5 @@ class Model:
         for tupla in lista:
             lista_format.append(f"""NOME: {tupla[0]}   ENDEREÇO: {tupla[1]}   TELEFONE: {tupla[2]}   CPF: {tupla[3]}""")
         return lista_format
-        
-    
-"""    def executarFuncao(self, botao):
-        if botao == 'Cadastrar Cliente':
-            self.banco.inserirCliente()
-        if botao == 'Consultar Cliente':
-            self.banco.consultarCliente()
-        if botao == 'Alterar Cliente':
-            self.banco.alterarCliente()
-        if botao == 'Listar Clientes':
-            self.banco.listarClientes()
-        if botao == 'Excluir Cliente':
-            self.banco.removerCliente()"""
         
     
