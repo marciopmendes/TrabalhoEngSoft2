@@ -57,8 +57,39 @@ class Banco:
                 for record in result:
                     print(record)
             db.close()
+            
+            def alterarCliente(self):#FUNCIONANDO
+        cpf = input("Para alterar os dados de um cliente, digite o cpf: ")
+        if self.verificaExistencia(cpf):
+            nome = input('Digite o nome do cliente:')
+            endereco = input('Digite o endereco do cliente:')
+            telefone = input('Digite o telefone do cliente:')#nao altera o cpf pq nao faz sentido
+            dados = (nome, endereco, telefone, cpf)
+            db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
+            cursor = db.cursor()
+            sql = """#UPDATE cliente_tbl SET cliente_nome = %s, cliente_endereco = %s, 
+            #cliente_telefone = %s WHERE cliente_cpf = %s;"""
+            #cursor.execute(sql, dados)
+            #db.commit()
+            #db.close()
+            #print("Os dados do cliente foram atualizados")
+        #else:
+        #    print("Não existe nenhum cliente com o CPF informado")
+    """"""
     """
-
+    def listarClientes(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NO TERMINAL
+        db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
+        cursor = db.cursor()
+        sql = "SELECT * FROM cliente_tbl;"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        if len(result) == 0:
+            print("Nenhum cliente foi cadastrado ainda.")
+        else:
+            for record in result:
+                print(record)
+        db.close()
+    """
 
     def inserirCliente(self, nome, endereco, telefone, cpf):#PEGANDO INPUT DO FORM
         dados = (nome, endereco, telefone, cpf)
@@ -82,15 +113,9 @@ class Banco:
             for record in result:
                 print(record)
         db.close()
-        return result
 
-
-    def alterarCliente(self):#FUNCIONANDO
-        cpf = input("Para alterar os dados de um cliente, digite o cpf: ")
+    def alterarCliente(self, cpf, nome, endereco, telefone):#PEGANDO INPUT DO FORM, FUNCIONANDO
         if self.verificaExistencia(cpf):
-            nome = input('Digite o nome do cliente:')
-            endereco = input('Digite o endereco do cliente:')
-            telefone = input('Digite o telefone do cliente:')#nao altera o cpf pq nao faz sentido
             dados = (nome, endereco, telefone, cpf)
             db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
             cursor = db.cursor()
@@ -99,7 +124,6 @@ class Banco:
             cursor.execute(sql, dados)
             db.commit()
             db.close()
-            print("Os dados do cliente foram atualizados")
         else:
             print("Não existe nenhum cliente com o CPF informado")
         
@@ -118,7 +142,7 @@ class Banco:
             print("Não existe nenhum cliente com o CPF informado")
         
 
-    def listarClientes(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA
+    def listarClientes(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NUMA LISTBOX
         db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
         cursor = db.cursor()
         sql = "SELECT * FROM cliente_tbl;"
@@ -126,10 +150,8 @@ class Banco:
         result = cursor.fetchall()
         if len(result) == 0:
             print("Nenhum cliente foi cadastrado ainda.")
-        else:
-            for record in result:
-                print(record)
         db.close()
+        return result
 
 
     def verificaExistencia(self, cpf):

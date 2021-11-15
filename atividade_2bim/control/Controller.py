@@ -18,27 +18,37 @@ class Controller:
 #   def clickButton(self, botao):
 #        self.model.executarFuncao(botao)
 
+    def clickAlterar(self):
+        self.view.alterarForm()
+    
     def clickCadastrar(self):
         self.view.clienteForm()
         
     def clickConsultar(self):
         self.view.consultaForm()
         
+    def clickListar(self):
+        self.view.listarTodos()
+        
     def enviarCadastro(self, nome, endereco, telefone, cpf):
         self.model.executarCadastro(nome, endereco, telefone, cpf)
         
+    def enviarAlteracao(self, cpf, nome, endereco, telefone):
+        self.model.executarAlteracao(cpf, nome, endereco, telefone)
+        
     def enviarConsulta(self, cpf):
         self.model.executarConsulta(cpf)
+        
+    def enviarLista(self):
+        lista = self.model.executarLista()
+        return lista
 
-        
-        
+      
 app = Controller()
 app.main()
 
 
 """PRÓXIMOS PASSOS:
 -EXIBIR OS DADOS DA CONSULTA EM UMA JANELA SEPARADA (USANDO TEXT WIDGET)
--CRIAR FUNCIONALIDADE DE ALTERAR CLIENTE
--CRIAR FUNCIONALIDADE DE LISTAR TODOS OS CLIENTES
 -CRIAR FUNCIONALIDADE DE DELETAR CLIENTE
 -VER SE DA PRA INSERIR PLACEHOLDERS"""
