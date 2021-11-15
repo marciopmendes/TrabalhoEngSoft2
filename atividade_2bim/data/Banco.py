@@ -27,13 +27,40 @@ class Banco:
         db.close()
         print("Tabela criada com sucesso.")
         #------------ADICIONAR AS OUTRAS CRIAÇÕES DE TABELAS AQUI, A MEDIDA QUE FOR NECESSÁRIO--------------
-        
+       
+       #DESCOMENTAR ESSA FUNÇÃO TODA PARA USAR O TERMINAL 
+    """def inserirCliente(self): #FUNCIONANDO, O CPF É A PK
+            nome = input('Digite o nome do cliente:')
+            endereco = input('Digite o endereco do cliente:')
+            telefone = input('Digite o telefone do cliente:')
+            cpf = input('Digite o Cpf do cliente:')
+            dados = (nome, endereco, telefone, cpf)
+            #INSERIR UM CLIENTE NO BANCO
+            db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
+            cursor = db.cursor()
+            sql = "INSERT INTO cliente_tbl (cliente_nome,cliente_endereco,cliente_telefone,cliente_cpf) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, dados)
+            db.commit()
+            db.close()
+            print("O cliente foi inserido com sucesso.")
+            
+            def consultarCliente(self): #FUNCIONANDO, A BUSCA É PELO CPF
+            cpf = input("Para consultar os dados de um cliente, digite o cpf: ")
+            db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
+            cursor = db.cursor()
+            sql = "SELECT * FROM cliente_tbl WHERE cliente_cpf = %s;"%(cpf)
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            if len(result) == 0:
+                print("Nenhum cliente cadastrado com o CPF informado.")
+            else:
+                for record in result:
+                    print(record)
+            db.close()
+    """
 
-    def inserirCliente(self): #FUNCIONANDO, O CPF É A PK
-        nome = input('Digite o nome do cliente:')
-        endereco = input('Digite o endereco do cliente:')
-        telefone = input('Digite o telefone do cliente:')
-        cpf = input('Digite o Cpf do cliente:')
+
+    def inserirCliente(self, nome, endereco, telefone, cpf):#PEGANDO INPUT DO FORM
         dados = (nome, endereco, telefone, cpf)
         #INSERIR UM CLIENTE NO BANCO
         db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
@@ -42,11 +69,8 @@ class Banco:
         cursor.execute(sql, dados)
         db.commit()
         db.close()
-        print("O cliente foi inserido com sucesso.")
 
-
-    def consultarCliente(self): #FUNCIONANDO, A BUSCA É PELO CPF
-        cpf = input("Para consultar os dados de um cliente, digite o cpf: ")
+    def consultarCliente(self, cpf): #CONSULTA PEGANDO INPUT DO FORM
         db = MySQLdb.connect("localhost", "root", "rkv83wwv", "BANCO")
         cursor = db.cursor()
         sql = "SELECT * FROM cliente_tbl WHERE cliente_cpf = %s;"%(cpf)
@@ -58,6 +82,7 @@ class Banco:
             for record in result:
                 print(record)
         db.close()
+        return result
 
 
     def alterarCliente(self):#FUNCIONANDO
