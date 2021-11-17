@@ -8,6 +8,7 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
         super().__init__()
         self.controller = controller
         self.mainWindow()
+        self.btnConectar()
         self.btnCadastrar()
         self.btnConsultar()
         self.btnAlterar()
@@ -18,6 +19,13 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
     def mainWindow(self):
         self.main_window = ttk.Frame(self)
         self.main_window.pack(padx=10, pady=10)
+        
+        
+    def btnConectar(self):
+        conectar_frm = ttk.Frame(self.main_window)
+        conectar_frm.pack()
+        conectar_btn = ttk.Button(conectar_frm, text='Conectar ao Banco de Dados', command=self.controller.clickConectar)
+        conectar_btn.pack(padx=1, pady=1)
     
     
     def btnAlterar(self):
@@ -125,7 +133,7 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
         self.sucessMessage()
     
     
-    def consultaForm(self): #SÓ FUNCIONA NO TERMINAL, NÃO CONSEGUI BOTAR NO TKINTER AINDA
+    def consultaForm(self):
         consulta_window = tk.Toplevel(self)
         
         cpf = tk.StringVar(consulta_window)
@@ -137,7 +145,7 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
         submit = ttk.Button(consulta_window, text="Enviar", command=consulta_window.destroy)
         submit.pack()
         self.wait_window(consulta_window)
-        ########################################
+
         listar_window = tk.Toplevel(self)
         resultado = tk.StringVar(listar_window)
         resultado.set(self.controller.enviarConsulta(cpf.get()))
@@ -146,7 +154,41 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
         cliente.insert('end', resultado.get())
         self.wait_window(listar_window)
         
+
+    def conectarForm(self): #TESTE DO FORM DE CONECTAR AO BANCO
+        conexao_window = tk.Toplevel(self)
         
+        host = tk.StringVar(conexao_window)
+        host_lbl = ttk.Label(conexao_window, text='Host')
+        host_lbl.pack()
+        host_ent = ttk.Entry(conexao_window, textvariable=host)
+        host_ent.pack(padx=1, pady=3)
+
+        usuario = tk.StringVar(conexao_window)
+        usuario_lbl = ttk.Label(conexao_window, text='Username')
+        usuario_lbl.pack()
+        usuario_ent = ttk.Entry(conexao_window, textvariable=usuario)
+        usuario_ent.pack(padx=1, pady=3)
+
+        password = tk.StringVar(conexao_window)
+        password_lbl = ttk.Label(conexao_window, text='Password')
+        password_lbl.pack()
+        password_ent = ttk.Entry(conexao_window, textvariable=password)
+        password_ent.pack(padx=1, pady=3)
+
+        nome = tk.StringVar(conexao_window)
+        nome_lbl = ttk.Label(conexao_window, text='Nome do Banco')
+        nome_lbl.pack()
+        nome_ent = ttk.Entry(conexao_window, textvariable=nome)
+        nome_ent.pack(padx=1, pady=3)
+        
+        conectar = ttk.Button(conexao_window, text="Conectar", command=conexao_window.destroy)
+        conectar.pack()
+        self.wait_window(conexao_window)
+
+        self.controller.setBanco(host.get(), usuario.get(), password.get(), nome.get())
+        self.sucessMessage()
+
         
     def deletarForm(self): #SÓ FUNCIONA NO TERMINAL, NÃO CONSEGUI BOTAR NO TKINTER AINDA
         deletar_window = tk.Toplevel(self)
@@ -166,7 +208,7 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
     
     def listarTodos(self):
         listar_window = tk.Toplevel(self)
-        clientes = tk.text(listar_window, selectmode='single', height=100, width=150)
+        clientes = tk.Listbox(listar_window, selectmode='single', height=100, width=150)
         clientes.pack()
         clientes.insert('end', *self.controller.enviarLista())
         self.wait_window(listar_window)
@@ -177,5 +219,5 @@ class View(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os métodos 
     
     def main(self):
         self.mainloop()#iniciando método do tkinter, é um loop infinito que termina quando fecha a janela
-        
+          
     

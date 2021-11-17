@@ -9,17 +9,16 @@ class Controller:
     def __init__(self):
         self.model = Model()
         self.view = View(self)
-        self.data = Banco()
+
 
     def main(self):
         self.view.main()
-        
-#DESCOMENTAR ESSA PARTE PARA FUNCIONAR PELO TERMINAL       
-#   def clickButton(self, botao):
-#        self.model.executarFuncao(botao)
 
     def clickAlterar(self):
         self.view.alterarForm()
+
+    def clickConectar(self):
+        self.view.conectarForm()
         
     def clickDeletar(self):
         self.view.deletarForm()
@@ -50,6 +49,9 @@ class Controller:
         lista = self.model.executarLista()
         return lista
 
+    def setBanco(self, host, username, password, nome):
+        self.model.setBanco(host, username, password, nome)
+
       
 app = Controller()
 app.main()
@@ -57,4 +59,4 @@ app.main()
 
 """PRÓXIMOS PASSOS:
 -JANELA DE SUCESSO OU ERRO NAS OPERAÇÕES (EX. CONSULTAR, DELETAR...)
--VER SE DA PRA INSERIR PLACEHOLDERS"""
+"""

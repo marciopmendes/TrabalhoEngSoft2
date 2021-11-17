@@ -28,5 +28,11 @@ class Model:
         for tupla in lista:
             lista_format.append(f"""NOME: {tupla[0]}   ENDEREÇO: {tupla[1]}   TELEFONE: {tupla[2]}   CPF: {tupla[3]}""")
         return lista_format
-        
-    
+
+    def setBanco(self, host, username, password, nome):
+        self.banco.setHost(host)
+        self.banco.setUsername(username)
+        self.banco.setPassword(password)
+        self.banco.setNome(nome)
+        self.banco.criaBanco()
+        self.banco.criaTabelas()
