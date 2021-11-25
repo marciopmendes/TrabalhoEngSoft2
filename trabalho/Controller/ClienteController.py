@@ -1,18 +1,16 @@
 from Model.ClienteModel import ClienteMd
-from View.ClienteView import ClienteVw
-from DAO.BancoDAO import BancoDb
+from DAO.InicioDAO import BancoDb
 from DAO.ClienteDAO import ClienteDb
+from Controller.InicioController import InicioCt
 
-class ClienteCt:
+
+class ClienteCt(InicioCt):
     
     banco = BancoDb()
     cdao = ClienteDb()
     
     def __init__(self):
-        self.view = ClienteVw(self)
-
-    def main(self):
-        self.view.main()
+        pass
         
     def enviarCadastro(self, nome, endereco, telefone, cpf):
         cliente = ClienteMd(nome, endereco, telefone, cpf)
@@ -32,12 +30,15 @@ class ClienteCt:
     def enviarLista(self):
         lista = ClienteCt.cdao.listarClientes()
         return lista
-
-    def setBanco(self, host, username, password, nome):
-        self.cdao.setBanco(host, username, password, nome)
-        
+   
     def getBanco(self):
         return ClienteCt.banco
         
-app = ClienteCt()
-app.main()
+
+
+"""
+PRÓXIMOS PASSOS:
+-VALIDAÇÃO NO FORMULÁRIO DO TKINTER
+-SPRINT 2 E 3
+-VALIDAÇÃO DE DADOS EM GERAL
+"""

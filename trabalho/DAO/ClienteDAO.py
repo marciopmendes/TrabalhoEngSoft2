@@ -1,5 +1,5 @@
 import MySQLdb
-from DAO.BancoDAO import BancoDb
+from DAO.InicioDAO import BancoDb
 
 
 class ClienteDb(BancoDb):
@@ -69,7 +69,7 @@ class ClienteDb(BancoDb):
         db.close()
         lista_format = []
         for tupla in result:
-            lista_format.append(f"""NOME: {tupla[0]}   ENDERE�O: {tupla[1]}   TELEFONE: {tupla[2]}   CPF: {tupla[3]}""")
+            lista_format.append(f"""NOME: {tupla[0]}   ENDERECO: {tupla[1]}   TELEFONE: {tupla[2]}   CPF: {tupla[3]}""")
         return lista_format
 
     def verificaExistencia(self, cpf):
