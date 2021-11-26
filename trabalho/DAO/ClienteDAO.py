@@ -54,9 +54,9 @@ class ClienteDb(BancoDb):
             sql = """DELETE FROM cliente_tbl WHERE cliente_cpf = %s;"""%(cpf)
             cursor.execute(sql)
             db.commit()
-            db.close()
         else:
-            print("N�o existe nenhum cliente com o CPF informado")
+            print("Nao existe nenhum cliente com o CPF informado")
+        db.close()
         
     def listarClientes(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NUMA LISTBOX
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)

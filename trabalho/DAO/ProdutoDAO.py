@@ -52,9 +52,9 @@ class ProdutoDb(BancoDb):
             sql = """DELETE FROM produto_tbl WHERE produto_codigo = %s;"""%(codigo)
             cursor.execute(sql)
             db.commit()
-            db.close()
         else:
-            print("N�o existe nenhum produto com o codigo informado")
+            print("Nao existe nenhum produto com o codigo informado")
+        db.close()
         
     def listarProdutos(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NUMA LISTBOX
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)

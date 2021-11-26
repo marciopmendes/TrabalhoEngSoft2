@@ -25,61 +25,77 @@ class CompraDb(BancoDb):
         db.close()
           
             
-    def alterarCompra(self, compra, codigoProduto, qtdItens):#PEGANDO INPUT DO FORM
-        if self.verificaExistencia(compra.getCodigo()):
-            dados = (compra.getMatriculaFuncionario(), compra.getCpfCliente(), compra.getCodigo(), compra.getMatriculaFuncionario(), compra.getCpfCliente(), codigoProduto, qtdItens, compra.getCodigo())
+    def alterarCompra(self, codigoCompra, matricula, cpf):#PEGANDO INPUT DO FORM
+        if self.verificaExistencia(codigoCompra):
+            dados = (matricula, cpf, codigoCompra)
             db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
             cursor = db.cursor()
-            sql = """UPDATE compra_tbl SET funcionario_matricula = %s, cliente_cpf = %s WHERE compra_codigo = %s;
-                     UPDATE compra_produto_tbl SET funcionario_matricula = %s, cliente_cpf = %s, produto_codigo = %s, qtd_itens = %s WHERE compra_codigo = %s;"""
+            sql = "UPDATE compra_tbl SET funcionario_matricula = %s, cliente_cpf = %s WHERE compra_codigo = %s;"
             cursor.execute(sql, dados)
             db.commit()
-            db.close()
         else:
             print("Nao existe nenhuma compra com o codigo informado")
-            
-    def consultarProduto(self, codigo): #CONSULTA PEGANDO INPUT DO FORM
-        db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
-        cursor = db.cursor()
-        sql = "SELECT * FROM produto_tbl WHERE produto_codigo = %s;"%(codigo)
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        if len(result) == 0:
-            print("Nenhum produto cadastrado com o codigo informado.")
         db.close()
-        result_format = f"""Codigo: {result[0]}   Descricao: {result[1]}   Valor: {result[2]}   Qtd Estoque: {result[3]}   Estoque Minimo: {result[4]}   Validade: {result[5]}"""
-        return result_format
             
-        
-    def deletarProduto(self, codigo):#FUNCIONANDO
-        if self.verificaExistencia(codigo):
+            
+    def alterarItens(self, matricula, cpf, codigoProduto, quantidade, codigoCompra):
+        if self.verificaExistencia(codigoCompra):
+            dados = (matricula, cpf, codigoProduto, quantidade, codigoCompra, matricula, cpf, codigoProduto)
             db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
             cursor = db.cursor()
-            sql = """DELETE FROM produto_tbl WHERE produto_codigo = %s;"""%(codigo)
-            cursor.execute(sql)
+            sql = "UPDATE compra_produto_tbl SET funcionario_matricula = %s, cliente_cpf = %s, produto_codigo = %s, qtd_itens = %s WHERE (compra_codigo = %s AND funcionario_matricula = %s AND cliente_cpf = %s AND produto_codigo = %s);"
+            cursor.execute(sql, dados)
             db.commit()
-            db.close()
         else:
-            print("N�o existe nenhum produto com o codigo informado")
-        
-    def listarProdutos(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NUMA LISTBOX
+            print("Nao existe nenhuma compra com o codigo informado")
+        db.close()
+            
+    def consultarCompra(self, codigo):#FORMATAR MELHOR O RESULTADO SE DER TEMPO -------------------
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
-        sql = "SELECT * FROM produto_tbl;"
+        sql = "SELECT * FROM compra_produto_tbl WHERE compra_codigo = %s;"%(codigo)
         cursor.execute(sql)
         result = cursor.fetchall()
         if len(result) == 0:
-            print("Nenhum produto foi cadastrado ainda.")
+            print("Nenhuma compra cadastrada com o codigo informado.")
+        db.close()
+        result_format = []
+        for tupla in result:
+            result_format.append(f"CPF do Cliente: {tupla[1]}   Vendedor: {tupla[2]}   Produto: {tupla[3]}   Quantidade: {tupla[4]}")
+        return result_format
+            
+        
+    def deletarCompra(self, codigo):
+        if self.verificaExistencia(codigo):
+            db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
+            cursor = db.cursor()
+            sql = "DELETE FROM compra_produto_tbl WHERE compra_codigo = %s;"%(codigo)
+            cursor.execute(sql)
+            sql = "DELETE FROM compra_tbl WHERE compra_codigo = %s;"%(codigo)
+            cursor.execute(sql)
+            db.commit()
+        else:
+            print("Nao existe nenhuma compra com o codigo informado")
+        db.close()
+        
+    def listarCompras(self):
+        db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
+        cursor = db.cursor()
+        sql = "SELECT * FROM compra_produto_tbl;"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        if len(result) == 0:
+            print("Nenhuma compra foi cadastrado ainda.")
         db.close()
         lista_format = []
         for tupla in result:
-            lista_format.append(f"""Codigo: {tupla[0]}   Descricao: {tupla[1]}   Valor: {tupla[2]}   Qtd Estoque: {tupla[3]}   Estoque Minimo: {tupla[4]}   Validade: {tupla[5]}""")
+            lista_format.append(f"Código da Compra: {tupla[0]}   CPF do Cliente: {tupla[1]}   Vendedor: {tupla[2]}   Produto: {tupla[3]}   Quantidade: {tupla[4]}")
         return lista_format
     
     def verificaExistencia(self, codigo):
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
-        sql = "SELECT * FROM produto_tbl WHERE produto_codigo = %s;"%(codigo)
+        sql = "SELECT * FROM compra_tbl WHERE compra_codigo = %s;"%(codigo)
         cursor.execute(sql)
         result = cursor.fetchall()
         if len(result) == 0:

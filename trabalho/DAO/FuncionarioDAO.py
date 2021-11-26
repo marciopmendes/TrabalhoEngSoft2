@@ -54,9 +54,9 @@ class FuncionarioDb(BancoDb):
             sql = """DELETE FROM funcionario_tbl WHERE funcionario_matricula = %s;"""%(matricula)
             cursor.execute(sql)
             db.commit()
-            db.close()
         else:
-            print("N�o existe nenhum funcionario com a matricula informada")
+            print("Nao existe nenhum funcionario com a matricula informada")
+        db.close()
             
     def listarFuncionarios(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NUMA LISTBOX
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)

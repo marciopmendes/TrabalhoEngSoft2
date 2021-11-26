@@ -17,5 +17,20 @@ class CompraCt(InicioCt):
         
     def cadastraItens(self, matricula, cpf, codigoCompra, codigoProduto, quantidade):
         CompraCt.cdao.cadastraItens(matricula, cpf, codigoCompra, codigoProduto, quantidade)
-
         
+    def alterarCompra(self, codigoCompra, matricula, cpf):
+        CompraCt.cdao.alterarCompra(codigoCompra, matricula, cpf)
+        
+    def alterarItens(self, matricula, cpf, codigoProduto, quantidade, codigoCompra):
+        CompraCt.cdao.alterarItens(matricula, cpf, codigoProduto, quantidade, codigoCompra)
+        
+    def enviarConsulta(self, codigo):
+        consultado = CompraCt.cdao.consultarCompra(codigo)
+        return consultado
+    
+    def deletarCompra(self, codigo):
+        CompraCt.cdao.deletarCompra(codigo)
+    
+    def enviarLista(self):
+        lista = CompraCt.cdao.listarCompras()
+        return lista
