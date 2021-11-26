@@ -108,11 +108,6 @@ class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�t
         codigoCompra_ent = ttk.Entry(alterar_window, textvariable=codigoCompra)
         codigoCompra_ent.pack(padx=1, pady=3)
         
-        proximo = tk.IntVar(alterar_window)
-        submit = ttk.Button(alterar_window, text="Alterar", command=lambda: proximo.set(1))
-        submit.pack()
-        submit.wait_variable(proximo)
-        
         matricula = tk.IntVar(alterar_window)
         matricula_lbl = ttk.Label(alterar_window, text='Matricula do Vendedor')
         matricula_lbl.pack()
@@ -125,27 +120,38 @@ class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�t
         cpf_ent = ttk.Entry(alterar_window, textvariable=cpf)
         cpf_ent.pack(padx=1, pady=3)
         
-        codigoProduto = tk.IntVar(alterar_window)
-        codigoProduto_lbl = ttk.Label(alterar_window, text='Codigo do Produto')
+        proximo = tk.IntVar(alterar_window)
+        proximo_btn = ttk.Button(alterar_window, text="Proximo", command=lambda: proximo.set(1))
+        proximo_btn.pack()
+        proximo_btn.wait_variable(proximo)
+        CompraCt.alterarCompra(self, codigoCompra.get(), matricula.get(), cpf.get())
+        itens_window = tk.Toplevel(self)
+        
+        codigoProduto = tk.IntVar(itens_window)
+        codigoProduto_lbl = ttk.Label(itens_window, text='Codigo do Produto')
         codigoProduto_lbl.pack()
-        codigoProduto_ent = ttk.Entry(alterar_window, textvariable=codigoProduto)
+        codigoProduto_ent = ttk.Entry(itens_window, textvariable=codigoProduto)
         codigoProduto_ent.pack(padx=1, pady=3)
         
-        qtdItens = tk.IntVar(alterar_window)
-        qtdItens_lbl = ttk.Label(alterar_window, text='Quantidade')
+        qtdItens = tk.IntVar(itens_window)
+        qtdItens_lbl = ttk.Label(itens_window, text='Quantidade')
         qtdItens_lbl.pack()
-        qtdItens_ent = ttk.Entry(alterar_window, textvariable=qtdItens)
+        qtdItens_ent = ttk.Entry(itens_window, textvariable=qtdItens)
         qtdItens_ent.pack(padx=1, pady=3)
         
-
-        self.controller.enviarAlteracao(int(codigo.get()), descricao.get(), float(valor.get()), int(qtdEstoque.get()), int(estoqueMinimo.get()), validade.get())
-        self.sucessMessage()
+        alterar = ttk.Button(itens_window, text="Alterar Itens", command=lambda: CompraCt.alterarItens(self, matricula.get(), cpf.get(), codigoProduto.get(), qtdItens.get(), codigoCompra.get()))
+        alterar.pack()
+        fechar = ttk.Button(itens_window, text="Finalizar Alteracoes", command=itens_window.destroy)
+        fechar.pack()
+        self.wait_window(itens_window)
+        alterar_window.destroy()
+        
     
     def consultaForm(self):
         consulta_window = tk.Toplevel(self)
         
-        codigo = tk.StringVar(consulta_window)
-        codigo_lbl = ttk.Label(consulta_window, text='Codigo')
+        codigo = tk.IntVar(consulta_window)
+        codigo_lbl = ttk.Label(consulta_window, text='Codigo da Compra')
         codigo_lbl.pack()
         codigo_ent = ttk.Entry(consulta_window, textvariable=codigo)
         codigo_ent.pack(padx=1, pady=3)
@@ -156,15 +162,15 @@ class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�t
 
         listar_window = tk.Toplevel(self)
         resultado = tk.StringVar(listar_window)
-        resultado.set(self.controller.enviarConsulta(int(codigo.get())))
-        produto = tk.Listbox(listar_window, selectmode='single', height=2, width=300)
-        produto.pack()
-        produto.insert('end', resultado.get())
+        resultado.set(self.controller.enviarConsulta(codigo.get()))
+        compra = tk.Listbox(listar_window, selectmode='single', height=2, width=300)
+        compra.pack()
+        compra.insert('end', resultado.get())
         self.wait_window(listar_window) 
 
     def deletarForm(self):
         deletar_window = tk.Toplevel(self)
-        codigo = tk.StringVar(deletar_window)
+        codigo = tk.IntVar(deletar_window)
         codigo_lbl = ttk.Label(deletar_window, text='Codigo')
         codigo_lbl.pack()
         codigo_ent = ttk.Entry(deletar_window, textvariable=codigo)
@@ -174,14 +180,14 @@ class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�t
         submit.pack()
         self.wait_window(deletar_window)
        
-        self.controller.deletarProduto(int(codigo.get()))
+        self.controller.deletarCompra(codigo.get())
         self.sucessMessage()
               
     def listarTodos(self):
         listar_window = tk.Toplevel(self)
         produtos = tk.Listbox(listar_window, selectmode='single', height=100, width=150)
         produtos.pack()
-        produtos.insert('end', *self.controller.enviarLista())#VER ESSA FUNCAO NO CONTROLLER
+        produtos.insert('end', *self.controller.enviarLista())
         self.wait_window(listar_window)
               
     def sucessMessage(self):
