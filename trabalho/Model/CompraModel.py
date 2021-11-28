@@ -2,13 +2,12 @@
 
 class CompraMd:
     
-    produtos = dict()
+    produtos = []
     
     def __init__(self, codigo, cpfCliente, matriculaFuncionario):
         self.codigo = codigo
         self.cpfCliente = cpfCliente
         self.matriculaFuncionario = matriculaFuncionario
-        #compra tem uma coleção de produtos, modelar isso
   
     def setCodigo(self, codigo):
         self.codigo = codigo

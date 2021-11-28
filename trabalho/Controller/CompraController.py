@@ -34,3 +34,6 @@ class CompraCt(InicioCt):
     def enviarLista(self):
         lista = CompraCt.cdao.listarCompras()
         return lista
+    
+    def valorCompra(self, codigo):
+        CompraCt.cdao.valorCompra(codigo)

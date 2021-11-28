@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
 from Controller.ClienteController import ClienteCt
+from tkinter import messagebox
 
-class ClienteVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�todos do tkinter
+class ClienteVw(tk.Tk):
       
     def __init__(self):
         super().__init__()
@@ -50,6 +50,22 @@ class ClienteVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�
         listar_btn.pack(padx=1, pady=1)
     
     def clienteForm(self):
+        
+        def validacao(nome, endereco, telefone, cpf):
+            if not nome.isalpha():
+                raise Exception ("Nome tem que ser somente letras")
+            if not len(endereco) > 10:
+                raise Exception ("Endereco nao eh tao pequeno assim")
+            if not telefone.isdigit():
+                raise Exception("Telefone nao tem letra, seu burro")
+            else:
+                if len(telefone) != 11:
+                    raise Exception("Formato de telefone esta errado")
+            if isinstance(cpf, int):
+                if len(cpf) != 11:
+                    raise Exception("CPF somente com 11 numeros")
+            else:
+                raise Exception("Inserir CPF somente numeros, sem pontos ou tracos")
         cadastro_window = tk.Toplevel(self)
         
         nome = tk.StringVar(cadastro_window)
@@ -70,17 +86,20 @@ class ClienteVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�
         telefone_ent = ttk.Entry(cadastro_window, textvariable=telefone)
         telefone_ent.pack(padx=1, pady=3)
         
-        cpf = tk.StringVar(cadastro_window)
+        cpf = tk.IntVar(cadastro_window)
         cpf_lbl = ttk.Label(cadastro_window, text='CPF')
         cpf_lbl.pack()
         cpf_ent = ttk.Entry(cadastro_window, textvariable=cpf)
         cpf_ent.pack(padx=1, pady=3)
         
+        validar = ttk.Button(cadastro_window, text="Validar", command=lambda: validacao(nome.get(), endereco.get(), telefone.get(), cpf.get()))
+        validar.pack()
+        
         submit = ttk.Button(cadastro_window, text="Enviar", command=cadastro_window.destroy)
         submit.pack()
         self.wait_window(cadastro_window)
 
-        self.controller.enviarCadastro(nome.get(), endereco.get(), telefone.get(), int(cpf.get()))
+        self.controller.enviarCadastro(nome.get(), endereco.get(), telefone.get(), cpf.get())
         self.sucessMessage()
         
     def alterarForm(self):

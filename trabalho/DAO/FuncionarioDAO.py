@@ -7,7 +7,7 @@ class FuncionarioDb(BancoDb):
     def __init__(self):
         pass
         
-    def inserirFuncionario(self, funcionario):#PEGANDO INPUT DO FORM
+    def inserirFuncionario(self, funcionario):
         if (funcionario.getNome() == "" or funcionario.getEndereco() == "" or funcionario.getTelefone() == "" or funcionario.getCpf() == "" or funcionario.getMatricula() == "" or funcionario.getSalarioBase() == ""):#nao aceita campo nulo
             raise "All fields must be entered"
         else:
@@ -19,7 +19,7 @@ class FuncionarioDb(BancoDb):
             db.commit()
             db.close()    
             
-    def alterarFuncionario(self, funcionario):#PEGANDO INPUT DO FORM
+    def alterarFuncionario(self, funcionario):
         if (funcionario.getNome() == "" or funcionario.getEndereco() == "" or funcionario.getTelefone() == "" or funcionario.getCpf() == "" or funcionario.getSalarioBase() == ""):#nao aceita campo nulo
             raise "All fields must be entered"
         if self.verificaExistencia(funcionario.getMatricula()):
@@ -34,7 +34,7 @@ class FuncionarioDb(BancoDb):
         else:
             print("Não existe nenhum funcionario com a matricula informada.")
             
-    def consultarFuncionario(self, matricula): #CONSULTA PEGANDO INPUT DO FORM
+    def consultarFuncionario(self, matricula):
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
         sql = "SELECT * FROM funcionario_tbl WHERE funcionario_matricula = %s;"%(matricula)
@@ -47,7 +47,7 @@ class FuncionarioDb(BancoDb):
         return result_format
             
         
-    def deletarFuncionario(self, matricula):#FUNCIONANDO
+    def deletarFuncionario(self, matricula):
         if self.verificaExistencia(matricula):
             db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
             cursor = db.cursor()
@@ -58,7 +58,7 @@ class FuncionarioDb(BancoDb):
             print("Nao existe nenhum funcionario com a matricula informada")
         db.close()
             
-    def listarFuncionarios(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NUMA LISTBOX
+    def listarFuncionarios(self):
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
         sql = "SELECT * FROM funcionario_tbl;"

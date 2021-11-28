@@ -33,12 +33,3 @@ class ClienteCt(InicioCt):
    
     def getBanco(self):
         return ClienteCt.banco
-        
-
-
-"""
-PRÓXIMOS PASSOS:
--VALIDAÇÃO NO FORMULÁRIO DO TKINTER
--SPRINT 2 E 3
--VALIDAÇÃO DE DADOS EM GERAL
-"""

@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from Controller.FuncionarioController import FuncionarioCt
 
-class FuncionarioVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�todos do tkinter
+class FuncionarioVw(tk.Tk):
       
     def __init__(self):
         super().__init__()
@@ -75,7 +75,7 @@ class FuncionarioVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os 
         cpf_lbl.pack()
         cpf_ent = ttk.Entry(cadastro_window, textvariable=cpf)
         cpf_ent.pack(padx=1, pady=3)
-        
+
         matricula = tk.StringVar(cadastro_window)
         matricula_lbl = ttk.Label(cadastro_window, text='Matricula')
         matricula_lbl.pack()
@@ -92,7 +92,7 @@ class FuncionarioVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os 
         submit.pack()
         self.wait_window(cadastro_window)
 
-        self.controller.enviarCadastro(nome.get(), endereco.get(), telefone.get(), cpf.get(), int(matricula.get()), salarioBase.get())
+        self.controller.enviarCadastro(nome.get(), endereco.get(), telefone.get(), cpf.get(), int(matricula.get()), float(salarioBase.get()))
         self.sucessMessage()
         
     def alterarForm(self):
@@ -181,7 +181,7 @@ class FuncionarioVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os 
         listar_window = tk.Toplevel(self)
         funcionarios = tk.Listbox(listar_window, selectmode='single', height=100, width=150)
         funcionarios.pack()
-        funcionarios.insert('end', *self.controller.enviarLista())#VER ESSA FUNCAO NO CONTROLLER
+        funcionarios.insert('end', *self.controller.enviarLista())
         self.wait_window(listar_window)
               
     def sucessMessage(self):

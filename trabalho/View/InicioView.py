@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
 from View.ClienteView import ClienteVw
 from View.CompraView import CompraVw
 from View.FuncionarioView import FuncionarioVw
 from View.ProdutoView import ProdutoVw
 from Controller.InicioController import InicioCt
+from tkinter import messagebox
 
-class InicioVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�todos do tkinter
+class InicioVw(tk.Tk):
       
     def __init__(self):
         super().__init__()

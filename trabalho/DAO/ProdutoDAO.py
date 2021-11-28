@@ -6,7 +6,7 @@ class ProdutoDb(BancoDb):
     def __init__(self):
         pass
     
-    def inserirProduto(self, produto):#PEGANDO INPUT DO FORM
+    def inserirProduto(self, produto):
         if (produto.getCodigo() == "" or produto.getDescricao() == "" or produto.getValor() == "" or produto.getQtdEstoque() == "" or produto.getEstoqueMinimo() == "" or produto.getValidade() == ""):#nao aceita campo nulo
             raise "All fields must be entered"
         else:
@@ -18,7 +18,7 @@ class ProdutoDb(BancoDb):
             db.commit()
             db.close()    
             
-    def alterarProduto(self, produto):#PEGANDO INPUT DO FORM
+    def alterarProduto(self, produto):
         if (produto.getDescricao() == "" or produto.getValor() == "" or produto.getQtdEstoque() == "" or produto.getEstoqueMinimo() == "" or produto.getValidade() == ""):#nao aceita campo nulo
             raise "All fields must be entered"
         if self.verificaExistencia(produto.getcodigo()):
@@ -32,7 +32,7 @@ class ProdutoDb(BancoDb):
         else:
             print("Nao existe nenhum produto com o codigo informado")
             
-    def consultarProduto(self, codigo): #CONSULTA PEGANDO INPUT DO FORM
+    def consultarProduto(self, codigo):
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
         sql = "SELECT * FROM produto_tbl WHERE produto_codigo = %s;"%(codigo)
@@ -45,18 +45,24 @@ class ProdutoDb(BancoDb):
         return result_format
             
         
-    def deletarProduto(self, codigo):#FUNCIONANDO
+    def deletarProduto(self, codigo):
         if self.verificaExistencia(codigo):
             db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
             cursor = db.cursor()
-            sql = """DELETE FROM produto_tbl WHERE produto_codigo = %s;"""%(codigo)
+            sql = f"select produto_tbl.produto_codigo from produto_tbl inner join compra_produto_tbl on produto_tbl.produto_codigo = compra_produto_tbl.produto_codigo where produto_tbl.produto_codigo = {codigo}"
             cursor.execute(sql)
-            db.commit()
+            result = cursor.fetchall()
+            if len(result) == 0:
+                sql = """DELETE FROM produto_tbl WHERE produto_codigo = %s;"""%(codigo)
+                cursor.execute(sql)
+                db.commit()
+            else:
+                print("Existem compras cadastradas relacionadas a esse produto. Impossível excluir.")
         else:
             print("Nao existe nenhum produto com o codigo informado")
         db.close()
         
-    def listarProdutos(self): #FUNCIONANDO, PRINTA CADA UM LINHA POR LINHA NUMA LISTBOX
+    def listarProdutos(self):
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
         sql = "SELECT * FROM produto_tbl;"

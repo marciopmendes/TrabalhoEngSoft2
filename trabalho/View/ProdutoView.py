@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from Controller.ProdutoController import ProdutoCt
 
-class ProdutoVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�todos do tkinter
+class ProdutoVw(tk.Tk):
       
     def __init__(self):
         super().__init__()
@@ -181,7 +181,7 @@ class ProdutoVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�
         listar_window = tk.Toplevel(self)
         produtos = tk.Listbox(listar_window, selectmode='single', height=100, width=150)
         produtos.pack()
-        produtos.insert('end', *self.controller.enviarLista())#VER ESSA FUNCAO NO CONTROLLER
+        produtos.insert('end', *self.controller.enviarLista())
         self.wait_window(listar_window)
               
     def sucessMessage(self):

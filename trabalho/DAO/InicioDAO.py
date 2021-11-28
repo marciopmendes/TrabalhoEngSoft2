@@ -36,14 +36,13 @@ class BancoDb:
 
     def criaBanco(self):
 
-        db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password) #host, user, senha
+        db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password)
         cursor = db.cursor()
-        cursor.execute(f"USE {self.banco_nome}")
+        cursor.execute(f"USE {self.banco_nome}")#MEXER NESSA PARTE PRA USAR O BANCO SE JÁ EXISTIR, SENAO, CRIAR
 #        cursor.execute(f"CREATE DATABASE {self.banco_nome}") 
         db.close()
 
     def criaTabelas(self):
-        #CRIAR TABELA CLIENTE
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
         sql = f"""        -- Schema banco3
@@ -107,6 +106,7 @@ class BancoDb:
           `compra_codigo` INT NOT NULL,
           `cliente_cpf` INT NOT NULL,
           `funcionario_matricula` INT NOT NULL,
+          `compra_valor` FLOAT(10,2) NOT NULL DEFAULT 0,
           PRIMARY KEY (`compra_codigo`, `cliente_cpf`, `funcionario_matricula`),
           UNIQUE INDEX `codigo_UNIQUE` (`compra_codigo` ASC) VISIBLE,
           INDEX `fk_Compra_cliente_tbl_idx` (`cliente_cpf` ASC) VISIBLE,
@@ -133,6 +133,7 @@ class BancoDb:
           `funcionario_matricula` INT NOT NULL,
           `produto_codigo` INT NOT NULL,
           `qtd_itens` INT NOT NULL,
+          `compra_data` DATE NOT NULL,
           PRIMARY KEY (`compra_codigo`, `cliente_cpf`, `funcionario_matricula`, `produto_codigo`),
           INDEX `fk_Compra_has_produto_tbl_produto_tbl1_idx` (`produto_codigo` ASC) VISIBLE,
           INDEX `fk_Compra_has_produto_tbl_Compra1_idx` (`compra_codigo` ASC, `cliente_cpf` ASC, `funcionario_matricula` ASC) VISIBLE,
@@ -152,48 +153,15 @@ class BancoDb:
         SET SQL_MODE=@OLD_SQL_MODE;
         SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
         SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;"""
-#        sql = """CREATE TABLE cliente_tbl(
-#                   cliente_nome VARCHAR(100) NOT NULL,
-#                   cliente_endereco VARCHAR(300) NOT NULL,
-#                   cliente_telefone VARCHAR(11) NOT NULL,
-#                   cliente_cpf INTEGER(11) NOT NULL,
-#                   PRIMARY KEY (cliente_cpf));"""
-#       print("Tabela criada com sucesso.")
-#       cursor.execute(sql)
-#       sql = """CREATE TABLE funcionario_tbl(
-#                   funcionario_nome VARCHAR(100) NOT NULL,
-#                   funcionario_endereco VARCHAR(300) NOT NULL,
-#                   funcionario_telefone VARCHAR(11) NOT NULL,
-#                   funcionario_cpf VARCHAR(11) NOT NULL,
-#                   funcionario_matricula INTEGER(8) NOT NULL,
-#                   funcionario_salarioBase FLOAT(8,2) NOT NULL,
-#                   PRIMARY KEY (funcionario_matricula));"""
-#       print("Tabela criada com sucesso.")
-#       cursor.execute(sql)
-#       sql = """CREATE TABLE produto_tbl(
-#                   produto_codigo INTEGER(4) NOT NULL,
-#                   produto_descricao VARCHAR(300) NOT NULL,
-#                   produto_valor FLOAT(8,2) NOT NULL,
-#                   produto_qtdEstoque INTEGER(5) NOT NULL,
-#                   produto_estoqueMinimo INTEGER(4) NOT NULL,
-#                   produto_validade VARCHAR(10) NOT NULL,
-#                   PRIMARY KEY (produto_codigo));"""
-#       cursor.execute(sql)
-#       db.close()
-#       print("Tabela criada com sucesso.")
-#       sql = """CREATE TABLE compra_tbl(
-#                   compra_codigo INTEGER(4) NOT NULL,
-#                   compra_cpfCliente INTEGER(11) NOT NULL,
-#                   compra_matriculaFuncionario INTEGER(8) NOT NULL,
-#                   PRIMARY KEY (compra_codigo));"""
+
         cursor.execute(sql)
         db.close()
 
         
-    def setBanco(self, host, username, password, nome):#pega os dados do form na view para criar e conectar ao banco
+    def setBanco(self, host, username, password, nome):
         self.setHost(self, host)
         self.setUsername(self, username)
         self.setPassword(self, password)
         self.setNome(self, nome)
-        self.criaBanco(self)
+        self.criaBanco(self)#MEXER NESSA PARTE PRA CHECAR SE AS TABELAS EXISTEM
 #        self.criaTabelas(self)

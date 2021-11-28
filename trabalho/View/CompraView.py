@@ -3,8 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from Controller.CompraController import CompraCt
 
-
-class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�todos do tkinter
+class CompraVw(tk.Tk):
       
     def __init__(self):
         super().__init__()
@@ -75,10 +74,10 @@ class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�t
         click = tk.IntVar(cadastro_window)
         incluir = ttk.Button(cadastro_window, text="Inserir Compra", command=lambda: click.set(1))
         incluir.pack()
-        incluir.wait_variable(click)#a pessoa tem q clicar no botão pra seguir a partir daqui
+        incluir.wait_variable(click)
         
-        CompraCt.cadastraCompra(self, codigo.get(), matricula.get(), cpf.get())#cadastra a compra no banco
-        incluir_window = tk.Toplevel(self)#abre a nova janela para inclusao de produtos
+        CompraCt.cadastraCompra(self, codigo.get(), matricula.get(), cpf.get())
+        incluir_window = tk.Toplevel(self)
         
         codigoProduto = tk.IntVar(incluir_window)
         codigoProduto_lbl = ttk.Label(incluir_window, text='Codigo do Produto')
@@ -92,11 +91,12 @@ class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�t
         quantidade_ent = ttk.Entry(incluir_window, textvariable=quantidade)
         quantidade_ent.pack(padx=1, pady=3)
 
-        additem = ttk.Button(incluir_window, text="Incluir Produtos", command=lambda: CompraCt.cadastraItens(CompraCt, matricula.get(), cpf.get(), codigo.get(), codigoProduto.get(), quantidade.get()))#FAZER CHAMADA DO CONTROLLER
+        additem = ttk.Button(incluir_window, text="Incluir Produtos", command=lambda: CompraCt.cadastraItens(CompraCt, matricula.get(), cpf.get(), codigo.get(), codigoProduto.get(), quantidade.get()))
         additem.pack()
         submit = ttk.Button(incluir_window, text="Finalizar Compra", command=incluir_window.destroy)
         submit.pack()
         self.wait_window(incluir_window)
+        CompraCt.valorCompra(self, codigo.get())
         cadastro_window.destroy()
          
     def alterarForm(self):
@@ -145,7 +145,6 @@ class CompraVw(tk.Tk):#a classe view herda de tk.Tk, ou seja, tem todos os m�t
         fechar.pack()
         self.wait_window(itens_window)
         alterar_window.destroy()
-        
     
     def consultaForm(self):
         consulta_window = tk.Toplevel(self)

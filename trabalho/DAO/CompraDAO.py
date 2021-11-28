@@ -1,5 +1,6 @@
 import MySQLdb
 from DAO.InicioDAO import BancoDb
+import time
 
 class CompraDb(BancoDb):
 
@@ -16,16 +17,34 @@ class CompraDb(BancoDb):
         db.close()
             
     def cadastraItens(self, matricula, cpf, codigoCompra, codigoProduto, qtdProduto):
-        dados = (matricula, cpf, codigoCompra, codigoProduto, qtdProduto)
+        dataCompra = time.strftime('%Y-%m-%d', time.localtime())
+        dados = (matricula, cpf, codigoCompra, codigoProduto, qtdProduto, dataCompra)
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
         cursor = db.cursor()
-        sql = "INSERT INTO compra_produto_tbl (`funcionario_matricula`, `cliente_cpf`, `compra_codigo`, `produto_codigo`, `qtd_itens`) VALUES (%s, %s, %s, %s, %s);"
+        sql = "INSERT INTO compra_produto_tbl (`funcionario_matricula`, `cliente_cpf`, `compra_codigo`, `produto_codigo`, `qtd_itens`, compra_data) VALUES (%s, %s, %s, %s, %s, %s);"
         cursor.execute(sql, dados)
         db.commit()
         db.close()
-          
+    
+    def valorCompra(self, codigo):
+        valor = 0
+        db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
+        cursor = db.cursor()
+        sql = f"""select cpt.compra_codigo, cpt.produto_codigo, cpt.qtd_itens, p.produto_valor
+                  from compra_produto_tbl as cpt
+                  inner join produto_tbl as p
+                  on cpt.produto_codigo = p.produto_codigo
+                  where compra_codigo = {codigo}"""
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        for linha in result:
+            valor += linha[2]*linha[3]
+        sql = f"update compra_tbl SET compra_valor = {valor} where compra_codigo = {codigo};"
+        cursor.execute(sql)
+        db.commit()
+        db.close()
             
-    def alterarCompra(self, codigoCompra, matricula, cpf):#PEGANDO INPUT DO FORM
+    def alterarCompra(self, codigoCompra, matricula, cpf):
         if self.verificaExistencia(codigoCompra):
             dados = (matricula, cpf, codigoCompra)
             db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
