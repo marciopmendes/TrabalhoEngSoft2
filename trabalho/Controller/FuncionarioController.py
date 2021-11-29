@@ -30,3 +30,6 @@ class FuncionarioCt(InicioCt):
     def enviarLista(self):
         lista = FuncionarioCt.fdao.listarFuncionarios()
         return lista
+    
+    def calculaSalario(self, matricula):
+        FuncionarioCt.fdao.salarioFuncionario(matricula)

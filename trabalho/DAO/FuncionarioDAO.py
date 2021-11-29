@@ -57,6 +57,32 @@ class FuncionarioDb(BancoDb):
         else:
             print("Nao existe nenhum funcionario com a matricula informada")
         db.close()
+        
+    def salarioFuncionario(self, matricula):
+        db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
+        cursor = db.cursor()
+        sql = f"""select cpt.funcionario_matricula, pt.produto_valor, cpt.qtd_itens
+                 from compra_produto_tbl as cpt inner join produto_tbl as pt
+                 on pt.produto_codigo = cpt.produto_codigo
+                 where cpt.funcionario_matricula = {matricula}"""
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        vendaTotal = 0
+        for linha in result:
+            vendaTotal += linha[1]*linha[2]
+        sql = f"""select funcionario_salarioBase
+                  from funcionario_tbl
+                  where funcionario_matricula = {matricula};""" 
+        cursor.execute(sql)
+        salarioBase = cursor.fetchone()
+        if vendaTotal < 10000:
+            salarioFinal = salarioBase[0]*1.05
+        else:
+            salarioFinal = salarioBase[0]*1.07
+        sql = f"UPDATE funcionario_tbl SET funcionario_salarioFinal = {salarioFinal} WHERE funcionario_matricula = {matricula};"
+        cursor.execute(sql)      
+        db.commit()
+        db.close()
             
     def listarFuncionarios(self):
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)

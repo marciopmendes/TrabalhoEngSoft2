@@ -75,6 +75,7 @@ class BancoDb:
           `funcionario_cpf` VARCHAR(11) NOT NULL,
           `funcionario_matricula` INT NOT NULL,
           `funcionario_salarioBase` FLOAT(8,2) NOT NULL,
+          `funcionario_salarioFinal` FLOAT(8,2) NOT NULL DEFAULT 0,
           PRIMARY KEY (`funcionario_matricula`),
           UNIQUE INDEX `funcionario_matricula_UNIQUE` (`funcionario_matricula` ASC) VISIBLE)
         ENGINE = InnoDB

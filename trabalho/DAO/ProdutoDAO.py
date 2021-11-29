@@ -21,16 +21,13 @@ class ProdutoDb(BancoDb):
     def alterarProduto(self, produto):
         if (produto.getDescricao() == "" or produto.getValor() == "" or produto.getQtdEstoque() == "" or produto.getEstoqueMinimo() == "" or produto.getValidade() == ""):#nao aceita campo nulo
             raise "All fields must be entered"
-        if self.verificaExistencia(produto.getcodigo()):
-            dados = (produto.getDescricao(), produto.getValor(), produto.getQtdEstoque(), produto.getEstoqueMinimo(), produto.getValidade(), produto.getCodigo())
-            db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
-            cursor = db.cursor()
-            sql = """UPDATE produto_tbl SET produto_descricao = %s, produto_valor = %s, produto_qtdEstoque = %s, produto_estoqueMinimo = %s, produto_validade = %s WHERE produto_codigo = %s;"""
-            cursor.execute(sql, dados)
-            db.commit()
-            db.close()
-        else:
-            print("Nao existe nenhum produto com o codigo informado")
+        dados = (produto.getDescricao(), produto.getValor(), produto.getQtdEstoque(), produto.getEstoqueMinimo(), produto.getValidade(), produto.getCodigo())
+        db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)
+        cursor = db.cursor()
+        sql = """UPDATE produto_tbl SET produto_descricao = %s, produto_valor = %s, produto_qtdEstoque = %s, produto_estoqueMinimo = %s, produto_validade = %s WHERE produto_codigo = %s;"""
+        cursor.execute(sql, dados)
+        db.commit()
+        db.close()
             
     def consultarProduto(self, codigo):
         db = MySQLdb.connect(self.banco_host, self.banco_username, self.banco_password, self.banco_nome)

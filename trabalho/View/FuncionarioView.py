@@ -14,6 +14,7 @@ class FuncionarioVw(tk.Tk):
         self.btnAlterar()
         self.btnListar()
         self.btnDeletar()
+        self.btnSalario()
 
     def mainWindow(self):
         self.main_window = ttk.Frame(self)
@@ -30,6 +31,12 @@ class FuncionarioVw(tk.Tk):
         cadastrar_frm.pack()
         cadastrar_btn = ttk.Button(cadastrar_frm, text='Cadastrar Funcionario', command=self.funcionarioForm)
         cadastrar_btn.pack(padx=1, pady=1)
+        
+    def btnSalario(self):
+        salario_frm = ttk.Frame(self.main_window)
+        salario_frm.pack()
+        salario_btn = ttk.Button(salario_frm, text='Calcular Salario', command=self.salarioForm)
+        salario_btn.pack(padx=1, pady=1)
 
     def btnConsultar(self):
         consultar_frm = ttk.Frame(self.main_window)
@@ -161,6 +168,20 @@ class FuncionarioVw(tk.Tk):
         funcionario.pack()
         funcionario.insert('end', resultado.get())
         self.wait_window(listar_window) 
+
+    def salarioForm(self):
+        salario_window = tk.Toplevel(self)
+        
+        matricula = tk.IntVar(salario_window)
+        matricula_lbl = ttk.Label(salario_window, text='Matricula')
+        matricula_lbl.pack()
+        matricula_ent = ttk.Entry(salario_window, textvariable=matricula)
+        matricula_ent.pack(padx=1, pady=3)
+        
+        submit = ttk.Button(salario_window, text="Calcular", command=lambda: FuncionarioCt.calculaSalario(self, matricula.get()))
+        submit.pack()
+        self.wait_window(salario_window)
+        salario_window.destroy()
 
     def deletarForm(self):
         deletar_window = tk.Toplevel(self)

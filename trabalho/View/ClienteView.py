@@ -51,21 +51,6 @@ class ClienteVw(tk.Tk):
     
     def clienteForm(self):
         
-        def validacao(nome, endereco, telefone, cpf):
-            if not nome.isalpha():
-                raise Exception ("Nome tem que ser somente letras")
-            if not len(endereco) > 10:
-                raise Exception ("Endereco nao eh tao pequeno assim")
-            if not telefone.isdigit():
-                raise Exception("Telefone nao tem letra, seu burro")
-            else:
-                if len(telefone) != 11:
-                    raise Exception("Formato de telefone esta errado")
-            if isinstance(cpf, int):
-                if len(cpf) != 11:
-                    raise Exception("CPF somente com 11 numeros")
-            else:
-                raise Exception("Inserir CPF somente numeros, sem pontos ou tracos")
         cadastro_window = tk.Toplevel(self)
         
         nome = tk.StringVar(cadastro_window)
@@ -91,9 +76,6 @@ class ClienteVw(tk.Tk):
         cpf_lbl.pack()
         cpf_ent = ttk.Entry(cadastro_window, textvariable=cpf)
         cpf_ent.pack(padx=1, pady=3)
-        
-        validar = ttk.Button(cadastro_window, text="Validar", command=lambda: validacao(nome.get(), endereco.get(), telefone.get(), cpf.get()))
-        validar.pack()
         
         submit = ttk.Button(cadastro_window, text="Enviar", command=cadastro_window.destroy)
         submit.pack()

@@ -14,8 +14,8 @@ class InicioVw(tk.Tk):
         self.controller = InicioCt()
         self.mainWindow()
         self.btnConectar()
-        self.btnFuncionario()
         self.btnCliente()
+        self.btnFuncionario()
         self.btnProduto()
         self.btnCompra()
 
