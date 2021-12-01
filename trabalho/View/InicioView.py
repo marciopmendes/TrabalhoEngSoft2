@@ -6,6 +6,7 @@ from View.FuncionarioView import FuncionarioVw
 from View.ProdutoView import ProdutoVw
 from Controller.InicioController import InicioCt
 from tkinter import messagebox
+from View.RelatorioView import RelatorioVw
 
 class InicioVw(tk.Tk):
       
@@ -18,6 +19,7 @@ class InicioVw(tk.Tk):
         self.btnFuncionario()
         self.btnProduto()
         self.btnCompra()
+        self.btnRelatorio()
 
         
     def mainWindow(self):
@@ -32,6 +34,12 @@ class InicioVw(tk.Tk):
         conectar_frm.pack()
         conectar_btn = ttk.Button(conectar_frm, text='Conectar ao Banco de Dados', command=self.conectarForm)
         conectar_btn.pack(padx=1, pady=1)
+        
+    def btnRelatorio(self):
+        relatorio_frm = ttk.Frame(self.main_window)
+        relatorio_frm.pack()
+        relatorio_btn = ttk.Button(relatorio_frm, text='Relatorios', command=RelatorioVw)
+        relatorio_btn.pack(padx=1, pady=1)
         
     def conectarForm(self): 
         conexao_window = tk.Toplevel(self)
